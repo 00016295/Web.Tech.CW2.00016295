@@ -1,0 +1,26 @@
+include ../head.pug
+body
+    .container.mt-5
+      h1 Add/Update Event
+      form(action="/submit-event-form" method="POST")
+        .mb-3
+          label(for="eventName" class="form-label") Event Name
+          input(type="text" class="form-control" id="eventName" name="eventName" required)
+        
+        .mb-3
+          label(for="venue" class="form-label") Venue
+          input(type="text" class="form-control" id="venue" name="venue" required)
+        .mb-3
+          label(for="contactPhone" class="form-label") Contact Phone
+          input(type="tel" class="form-control" id="contactPhone" name="contactPhone" required)
+        button(type="submit" class="btn btn-primary") Add/Edit
+
+    script.
+        const picker = new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'),{
+            localization: {
+                'locale': 'fr'
+            }
+        });
+        picker.dates.formatInput = function(date) {
+            return moment(date).format('DD/MM/YYYY HH:mm')
+        }
