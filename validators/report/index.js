@@ -26,7 +26,6 @@ const deletereportValidation = () => {
   ];
 };
 
-
 module.exports = {
     addReportValidation,
     deletereportValidation
