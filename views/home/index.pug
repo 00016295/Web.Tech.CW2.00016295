@@ -6,9 +6,9 @@ body
         thead
           tr
             th(scope="col") ID
-            th(scope="col") Event
-            th(scope="col") Event Date
-            th(scope="col") note 
+            th(scope="col") Event Name
+            th(scope="col") Event DateTime
+            th(scope="col") Venue
             th(scope="col") Actions
         tbody
 script.
@@ -25,10 +25,10 @@ script.
                 <td>${report.eventName}</td>
                 <td>${report.eventDateTime}</td>
                 <td>${report.venue}</td>
-                
+               
                 <td>
                   <button class="btn btn-primary btn-sm">Edit</button>
-                  <button class="btn btn-danger btn-sm">Delete</button>
+                  <button class="btn btn-danger btn-sm" data-id="${t.id}">Delete</button>
                 </td>
               `;
               tableBody.appendChild(row);
@@ -36,5 +36,19 @@ script.
           })
           .catch(function(error) {
             console.log(error);
+          });
+
+          // Use event delegation for delete buttons
+          document.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('btn-danger')) {
+              const reportId = event.target.getAttribute('data-id');
+              axios.delete(`/api/report/${reportId}`).then(function(response) {
+                console.log('Delete successful', response);
+                location.href = '/'
+              })
+              .catch(function(error) {
+                console.log('Error deleting report', error);
+              });
+            }
           });
       });

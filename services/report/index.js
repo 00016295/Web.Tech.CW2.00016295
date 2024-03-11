@@ -8,8 +8,11 @@ const report_service = {
     getAll() {
         return reports
     },
+    getById(id) {
+        return reports.find(t => t.id == id)
+    },    
     create(req, res) {
-        let new_id = genRanId(4)
+        let new_id = genRandId(4)
                 
         const report = req.body
 
@@ -23,6 +26,11 @@ const report_service = {
         writeToFile(reports)
         
         return new_report
+    },
+    delete(id) {
+        const index = reports.findIndex(u => u.id == id)
+        reports.splice(index, 1)    
+        writeToFile(reports)
     }
 }
 
@@ -39,7 +47,7 @@ let writeToFile = async (users) => {
 }
 
 // generate random id inspired by uuid
-let genRanId = (count) =>{
+let genRandId = (count) =>{
     let result = ''
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     const charactersLength = characters.length
@@ -49,4 +57,4 @@ let genRanId = (count) =>{
     return result
 }
 
-module.exports =report_service
+module.exports = report_service

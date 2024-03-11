@@ -1,6 +1,6 @@
 const express = require('express');
 const { validationResult } = require('express-validator');
-const { addReportValidation } = require('../../../validators/report');
+const { addReportValidation,deletereportValidation } = require('../../../validators/report');
 
 const router = express.Router();
 const report_controller = require('../../../controllers/api/report');
@@ -19,5 +19,15 @@ router.post('/', addReportValidation(), (req, res)=>{
 
     report_controller.create(req, res)
 })
+
+router.delete('/:id', deletereportValidation(), (req, res)=>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  report_controller.delete(req, res)
+})
+
 
 module.exports = router;

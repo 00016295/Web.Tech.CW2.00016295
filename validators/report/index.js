@@ -1,5 +1,5 @@
-const { body } = require('express-validator');
-
+const { body,param} = require('express-validator');
+const report_service = require('../../services/report')
 const addReportValidation = () => {
   return [
     body('eventName')
@@ -15,7 +15,19 @@ const addReportValidation = () => {
     
   ];
 };
+const deletereportValidation = () => {
+  return [
+    param('id').custom(async (id) => {
+      const exists = await report_service.getById(id);
+      if (!exists) {
+        throw new Error('report not found');
+      }
+    })
+  ];
+};
+
 
 module.exports = {
-    addReportValidation
+    addReportValidation,
+    deletereportValidation
 };
