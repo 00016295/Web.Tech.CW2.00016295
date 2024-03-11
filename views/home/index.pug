@@ -6,29 +6,35 @@ body
         thead
           tr
             th(scope="col") ID
-            th(scope="col") Event Name
-            th(scope="col") Event DateTime
-            th(scope="col") Venue
-            th(scope="col") Contact Phone
-            
+            th(scope="col") Event
+            th(scope="col") Event Date
+            th(scope="col") note 
+            th(scope="col") Actions
         tbody
-          tr
-            td 1
-            td Example Event Name 1
-            td 2024-02-17 10:00
-            td Example Venue
-            td +1234567890
-            
-            td
-              button.btn.btn-primary.btn-sm Edit
-              button.btn.btn-danger.btn-sm Delete
-          tr
-            td 1
-            td Example Event Name 2
-            td 2024-02-17 10:00
-            td Example Venue
-            td +1234567890
-            
-            td
-              button.btn.btn-primary.btn-sm Edit
-              button.btn.btn-danger.btn-sm Delete
+script.
+      document.addEventListener('DOMContentLoaded', function() {
+        axios.get('/api/report')
+          .then(function(response) {
+            const reports = response.data;
+            const tableBody = document.querySelector('table tbody');
+            reports.forEach(t => {
+              const row = document.createElement('tr');
+              const report = t.report
+              row.innerHTML = `
+                <td>${t.id}</td>
+                <td>${report.eventName}</td>
+                <td>${report.eventDateTime}</td>
+                <td>${report.venue}</td>
+                
+                <td>
+                  <button class="btn btn-primary btn-sm">Edit</button>
+                  <button class="btn btn-danger btn-sm">Delete</button>
+                </td>
+              `;
+              tableBody.appendChild(row);
+            });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      });

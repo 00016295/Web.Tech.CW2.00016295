@@ -9,5 +9,4 @@ const home_controller = {
         res.render('home/add_update');
     }
 };
-  
 module.exports = home_controller;
