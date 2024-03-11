@@ -1,7 +1,6 @@
-// import specific service class
+
 const report_service = require('../../../services/report')
 
-// mention the service's needed actions (methods)
 const report_controller = {
     getAll(req, res) {
         res.json(report_service.getAll())
@@ -10,6 +9,15 @@ const report_controller = {
         res.status(201).json(
             report_service.create(req, res)
         )
+    },
+    update(req, res) {
+        const report = report_service.update(req.params.id, req.body)
+        
+        if (report) {
+            res.json(report)
+        } else {
+            res.status(404).send('report not found')
+        }
     },
     delete(req, res) {
         const report = report_service.getById(req.params.id)

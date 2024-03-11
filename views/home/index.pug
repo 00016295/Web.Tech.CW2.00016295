@@ -1,54 +1,60 @@
 include ../head.pug
 body
     .container.mt-5
-      h1 List
+      .row.d-flex.align-items-center
+        .col-md-6
+          h1 Note list
+        .col-md-6.text-end
+          a.btn.btn-success(href='/add', role='button') Add      
       table.table.table-responsive.table-hover.table-striped.table-dark
         thead
           tr
             th(scope="col") ID
             th(scope="col") Event Name
             th(scope="col") Event DateTime
-            th(scope="col") Venue
+            th(scope="col") note
             th(scope="col") Actions
         tbody
 script.
-      document.addEventListener('DOMContentLoaded', function() {
-        axios.get('/api/report')
-          .then(function(response) {
-            const reports = response.data;
-            const tableBody = document.querySelector('table tbody');
-            reports.forEach(t => {
-              const row = document.createElement('tr');
-              const report = t.report
-              row.innerHTML = `
-                <td>${t.id}</td>
-                <td>${report.eventName}</td>
-                <td>${report.eventDateTime}</td>
-                <td>${report.venue}</td>
-               
-                <td>
-                  <button class="btn btn-primary btn-sm">Edit</button>
-                  <button class="btn btn-danger btn-sm" data-id="${t.id}">Delete</button>
-                </td>
-              `;
-              tableBody.appendChild(row);
-            });
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-
-          // Use event delegation for delete buttons
-          document.addEventListener('click', function(event) {
-            if (event.target && event.target.classList.contains('btn-danger')) {
-              const reportId = event.target.getAttribute('data-id');
-              axios.delete(`/api/report/${reportId}`).then(function(response) {
-                console.log('Delete successful', response);
-                location.href = '/'
-              })
-              .catch(function(error) {
-                console.log('Error deleting report', error);
-              });
-            }
-          });
+  document.addEventListener('DOMContentLoaded', function() {
+    axios.get('/api/report').then(function(response) {
+      const reports = response.data;
+      const tableBody = document.querySelector('table tbody');
+      reports.forEach(t => {
+        const row = document.createElement('tr');
+        const report = t.report
+        row.innerHTML = `
+          <td>${t.id}</td>
+          <td>${report.eventName}</td>
+          <td>${report.eventDateTime}</td>
+          <td>${report.venue}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" data-id="${t.id}" onclick="window.location.href='/update/${t.id}'">Update</button>
+            <button class="btn btn-danger btn-sm" data-id="${t.id}">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
       });
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+    document.addEventListener('click', function(event) {
+      if (event.target && event.target.classList.contains('btn-danger')) {
+        if(window.confirm("Are you sure you want to delete")===true) {
+                  const reportId = event.target.getAttribute('data-id');
+        axios.delete(`/api/report/${reportId}`).then(function(response) {
+          alert('Deleted successfully', response);
+          location.href = '/'
+        })
+        .catch(function(error) {
+          alert('Error deleting report: ' + error);
+        });
+          } else {
+            return;
+          }
+      }
+    });
+    
+  });

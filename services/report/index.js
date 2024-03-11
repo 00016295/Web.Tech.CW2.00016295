@@ -1,9 +1,9 @@
 const fs = require('fs')
 
-// access global mock db file
+
 const reports = require(global.mock_db)
 
-// write service method implementations
+
 const report_service = {
     getAll() {
         return reports
@@ -27,6 +27,19 @@ const report_service = {
         
         return new_report
     },
+    update(id, updateData){
+        const reportIndex = reports.findIndex(t => t.id == id)
+
+        if (reportIndex === -1) {
+            return null
+        }
+
+        reports[reportIndex].report = { ...reports[reportIndex].report, ...updateData }
+
+        writeToFile(reports)
+
+        return reports[reportIndex]
+    },
     delete(id) {
         const index = reports.findIndex(u => u.id == id)
         reports.splice(index, 1)    
@@ -34,7 +47,7 @@ const report_service = {
     }
 }
 
-// create function for overwriting the db file updated db content
+
 let writeToFile = async (users) => {
     await 
         fs.writeFileSync(
@@ -46,7 +59,6 @@ let writeToFile = async (users) => {
         )
 }
 
-// generate random id inspired by uuid
 let genRandId = (count) =>{
     let result = ''
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
