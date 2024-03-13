@@ -10,10 +10,12 @@ body
         thead
           tr
             th(scope="col") ID
-            th(scope="col") Event Name
-            th(scope="col") Event DateTime
-            th(scope="col") note
+            th(scope="col") Event 
+            th(scope="col") Date
+            th(scope="col") Details 
             th(scope="col") Actions
+            p2 This web application was created to fulfill Web Technology module’s requirements and does not represent an actual company or service
+
         tbody
 script.
   document.addEventListener('DOMContentLoaded', function() {
@@ -25,9 +27,9 @@ script.
         const report = t.report
         row.innerHTML = `
           <td>${t.id}</td>
-          <td>${report.eventName}</td>
-          <td>${report.eventDateTime}</td>
-          <td>${report.venue}</td>
+          <td>${report.Event}</td>
+          <td>${report.Date}</td>
+          <td>${report.details}</td>
           <td>
             <button class="btn btn-primary btn-sm" data-id="${t.id}" onclick="window.location.href='/update/${t.id}'">Update</button>
             <button class="btn btn-danger btn-sm" data-id="${t.id}">Delete</button>
@@ -55,6 +57,5 @@ script.
             return;
           }
       }
-    });
-    
+    }); 
   });
