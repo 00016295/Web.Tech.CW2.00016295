@@ -6,3 +6,5 @@ To run the application if you don't have installed node.js first of all you must
 There are no more any application dependencies’ have been used
 
 00016295 Github https://github.com/00016295/Web.Tech.CW2.00016295
+
+Deployed version http://ec2-16-171-113-6.eu-north-1.compute.amazonaws.com:3000/
